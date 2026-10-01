@@ -1,418 +1,354 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>BlueStar Prime⭐ Trading Journal</title>
 
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
 <style>
-* {
-  box-sizing: border-box;
+:root{
+  --bg:#07111f;
+  --card:#0d1b2d;
+  --card2:#10243b;
+  --input:#091626;
+  --border:#1d3552;
+  --blue:#2f8cff;
+  --green:#19c37d;
+  --red:#ff4d67;
+  --gold:#f5c451;
+  --text:#f4f7fb;
+  --muted:#8fa4bd;
+  --shadow:0 15px 40px rgba(0,0,0,.25);
 }
 
-:root {
-  --bg: #07111f;
-  --panel: #0d1b2d;
-  --panel-2: #11243a;
-  --border: rgba(255,255,255,0.08);
-  --text: #f4f7fb;
-  --muted: #8ea1b8;
-  --blue: #2f80ed;
-  --blue-2: #56a3ff;
-  --green: #20c997;
-  --red: #ff5c6c;
-  --gold: #f5c451;
-  --input: #091726;
+*{
+  box-sizing:border-box;
 }
 
-body {
-  margin: 0;
-  font-family: Arial, Helvetica, sans-serif;
-  background:
-    radial-gradient(circle at top right, rgba(47,128,237,.18), transparent 30%),
-    linear-gradient(180deg, #07111f 0%, #091522 100%);
-  color: var(--text);
-  min-height: 100vh;
+body{
+  margin:0;
+  font-family:Arial,Helvetica,sans-serif;
+  background:linear-gradient(145deg,#050c16,#09182a 55%,#07111f);
+  color:var(--text);
 }
 
-header {
-  background:
-    linear-gradient(135deg, #0b1d34, #102d4d);
-  border-bottom: 1px solid var(--border);
-  padding: 22px 18px;
-  position: relative;
-  overflow: hidden;
+.container{
+  width:min(1100px,94%);
+  margin:auto;
+  padding:20px 0 50px;
 }
 
-header::after {
-  content: "";
-  position: absolute;
-  width: 180px;
-  height: 180px;
-  right: -70px;
-  top: -80px;
-  background: rgba(47,128,237,.15);
-  border-radius: 50%;
+.header{
+  background:linear-gradient(135deg,#10243b,#0b1728);
+  border:1px solid var(--border);
+  border-radius:22px;
+  padding:22px;
+  box-shadow:var(--shadow);
+  margin-bottom:20px;
 }
 
-.header-inner {
-  max-width: 950px;
-  margin: auto;
-  position: relative;
-  z-index: 2;
+.brand{
+  display:flex;
+  align-items:center;
+  gap:12px;
 }
 
-.brand {
-  display: flex;
-  align-items: center;
-  gap: 10px;
+.logo{
+  width:48px;
+  height:48px;
+  border-radius:15px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:#17375c;
+  font-size:25px;
 }
 
-.logo {
-  width: 42px;
-  height: 42px;
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(135deg, #1769e0, #4da3ff);
-  box-shadow: 0 8px 25px rgba(47,128,237,.3);
-  font-size: 21px;
+.brand h1{
+  margin:0;
+  font-size:22px;
 }
 
-.header-title {
-  font-size: 20px;
-  font-weight: 800;
-  letter-spacing: .2px;
+.brand p{
+  margin:5px 0 0;
+  color:var(--muted);
+  font-size:13px;
 }
 
-.header-subtitle {
-  margin-top: 4px;
-  color: #a9bdd3;
-  font-size: 12px;
+.user{
+  margin-top:18px;
+  padding:13px 15px;
+  background:#091626;
+  border:1px solid var(--border);
+  border-radius:14px;
+  color:#dce8f5;
 }
 
-.header-user {
-  margin-top: 18px;
-  padding: 11px 13px;
-  background: rgba(255,255,255,.06);
-  border: 1px solid rgba(255,255,255,.08);
-  border-radius: 12px;
-  font-size: 13px;
-  color: #d9e7f6;
+.user strong{
+  color:var(--blue);
 }
 
-main {
-  max-width: 950px;
-  margin: auto;
-  padding: 18px;
+.section{
+  background:rgba(13,27,45,.96);
+  border:1px solid var(--border);
+  border-radius:20px;
+  padding:20px;
+  margin-bottom:20px;
+  box-shadow:var(--shadow);
 }
 
-.card {
-  background: linear-gradient(145deg, rgba(17,36,58,.98), rgba(10,25,42,.98));
-  border: 1px solid var(--border);
-  border-radius: 18px;
-  padding: 19px;
-  margin-bottom: 18px;
-  box-shadow: 0 15px 35px rgba(0,0,0,.18);
+.section-title{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:18px;
 }
 
-.section-heading {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-  margin-bottom: 16px;
+.section-title h2{
+  margin:0;
+  font-size:18px;
 }
 
-.section-title {
-  margin: 0;
-  font-size: 17px;
-  font-weight: 800;
+.section-title span{
+  color:var(--muted);
+  font-size:12px;
 }
 
-.section-caption {
-  margin: 4px 0 0;
-  color: var(--muted);
-  font-size: 12px;
+.stats{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:12px;
 }
 
-.stats {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 11px;
+.stat{
+  background:var(--card2);
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:16px;
 }
 
-.stat {
-  background: rgba(255,255,255,.035);
-  border: 1px solid var(--border);
-  padding: 15px;
-  border-radius: 14px;
-  position: relative;
-  overflow: hidden;
+.stat-label{
+  color:var(--muted);
+  font-size:12px;
+  margin-bottom:8px;
 }
 
-.stat::after {
-  content: "";
-  position: absolute;
-  width: 55px;
-  height: 55px;
-  right: -20px;
-  bottom: -25px;
-  border-radius: 50%;
-  background: rgba(47,128,237,.08);
+.stat-value{
+  font-size:22px;
+  font-weight:bold;
 }
 
-.stat-label {
-  font-size: 11px;
-  color: var(--muted);
-  text-transform: uppercase;
-  letter-spacing: .5px;
+.green{
+  color:var(--green);
 }
 
-.stat-value {
-  display: block;
-  margin-top: 7px;
-  font-size: 21px;
-  font-weight: 800;
+.red{
+  color:var(--red);
 }
 
-#netPL {
-  color: var(--green);
+.gold{
+  color:var(--gold);
 }
 
-.form-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 13px;
+.form-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:15px;
 }
 
-label {
-  display: block;
-  margin-top: 6px;
-  color: #b9c9da;
-  font-size: 11px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: .4px;
+.field{
+  display:flex;
+  flex-direction:column;
+  gap:7px;
+}
+
+.field.full{
+  grid-column:1/-1;
+}
+
+label{
+  font-size:12px;
+  color:var(--muted);
 }
 
 input,
 select,
-textarea,
-button {
-  width: 100%;
-  font-family: inherit;
-  font-size: 14px;
-}
-
-input,
-select,
-textarea {
-  padding: 12px 13px;
-  margin-top: 7px;
-  border-radius: 11px;
-  border: 1px solid rgba(255,255,255,.09);
-  background: var(--input);
-  color: var(--text);
-  outline: none;
-  transition: .2s;
-}
-
-input::placeholder,
-textarea::placeholder {
-  color: #61758b;
+textarea{
+  width:100%;
+  background:var(--input);
+  color:var(--text);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:13px;
+  outline:none;
+  font-size:14px;
 }
 
 input:focus,
 select:focus,
-textarea:focus {
-  border-color: rgba(47,128,237,.8);
-  box-shadow: 0 0 0 3px rgba(47,128,237,.12);
+textarea:focus{
+  border-color:var(--blue);
 }
 
-textarea {
-  min-height: 90px;
-  resize: vertical;
+textarea{
+  min-height:90px;
+  resize:vertical;
 }
 
-.primary-btn {
-  border: none;
-  margin-top: 16px;
-  padding: 13px;
-  border-radius: 11px;
-  background: linear-gradient(135deg, #1769e0, #328cf4);
-  color: white;
-  font-weight: 800;
-  cursor: pointer;
-  box-shadow: 0 8px 20px rgba(47,128,237,.22);
+.button-row{
+  display:flex;
+  gap:10px;
+  margin-top:18px;
 }
 
-.primary-btn:hover {
-  filter: brightness(1.08);
+button{
+  border:0;
+  border-radius:12px;
+  padding:13px 18px;
+  cursor:pointer;
+  font-weight:bold;
+  font-size:14px;
 }
 
-.message {
-  margin-top: 11px;
-  font-size: 13px;
-  color: var(--green);
-  text-align: center;
-  font-weight: 700;
+.save{
+  background:var(--blue);
+  color:white;
+  flex:1;
 }
 
-.trade {
-  border: 1px solid var(--border);
-  background: rgba(255,255,255,.025);
-  border-radius: 14px;
-  padding: 14px;
-  margin-bottom: 11px;
+.clear{
+  background:#291522;
+  color:#ff7b8d;
+  border:1px solid #512031;
 }
 
-.trade:last-child {
-  margin-bottom: 0;
+.trade{
+  background:#0a1829;
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:17px;
+  margin-bottom:12px;
 }
 
-.trade-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 10px;
+.trade-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  margin-bottom:12px;
 }
 
-.trade-pair {
-  font-size: 16px;
-  font-weight: 800;
-  color: white;
+.pair{
+  font-weight:bold;
+  font-size:16px;
 }
 
-.trade-date {
-  margin-top: 4px;
-  color: var(--muted);
-  font-size: 12px;
+.badge{
+  padding:5px 9px;
+  border-radius:20px;
+  font-size:11px;
+  font-weight:bold;
 }
 
-.result-badge {
-  padding: 5px 9px;
-  border-radius: 20px;
-  font-size: 11px;
-  font-weight: 800;
+.badge.win{
+  background:rgba(25,195,125,.12);
+  color:var(--green);
 }
 
-.win {
-  color: var(--green);
-  font-weight: 800;
+.badge.loss{
+  background:rgba(255,77,103,.12);
+  color:var(--red);
 }
 
-.loss {
-  color: var(--red);
-  font-weight: 800;
+.badge.breakeven{
+  background:rgba(245,196,81,.12);
+  color:var(--gold);
 }
 
-.breakeven {
-  color: var(--gold);
-  font-weight: 800;
+.trade-info{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:10px;
 }
 
-.trade-info {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
-  margin-top: 13px;
+.info{
+  background:#0d2035;
+  border-radius:10px;
+  padding:10px;
 }
 
-.info-box {
-  padding: 9px 10px;
-  background: rgba(0,0,0,.14);
-  border-radius: 9px;
+.info small{
+  display:block;
+  color:var(--muted);
+  font-size:10px;
+  margin-bottom:5px;
 }
 
-.info-label {
-  color: var(--muted);
-  font-size: 10px;
-  text-transform: uppercase;
+.info strong{
+  font-size:13px;
 }
 
-.info-value {
-  margin-top: 3px;
-  font-size: 13px;
-  font-weight: 700;
+.notes{
+  margin-top:12px;
+  color:#b8c8d9;
+  font-size:13px;
+  line-height:1.5;
 }
 
-.trade-notes {
-  margin-top: 10px;
-  padding: 10px;
-  border-left: 3px solid var(--blue);
-  background: rgba(47,128,237,.06);
-  color: #c7d6e7;
-  font-size: 12px;
-  line-height: 1.5;
-  border-radius: 5px;
+.delete{
+  margin-top:12px;
+  background:#28131b;
+  color:#ff7082;
+  border:1px solid #4a1d29;
+  padding:9px 13px;
+  font-size:12px;
 }
 
-.delete-btn {
-  width: auto;
-  border: 1px solid rgba(255,92,108,.2);
-  background: rgba(255,92,108,.08);
-  color: #ff7c88;
-  padding: 8px 11px;
-  margin-top: 11px;
-  border-radius: 9px;
-  cursor: pointer;
-  font-size: 12px;
-  font-weight: 700;
+.empty{
+  text-align:center;
+  padding:35px 15px;
+  color:var(--muted);
 }
 
-.delete-btn:hover {
-  background: rgba(255,92,108,.15);
+.status{
+  margin-top:12px;
+  font-size:12px;
+  color:var(--muted);
+  text-align:center;
 }
 
-.clear-btn {
-  border: 1px solid rgba(255,255,255,.08);
-  background: rgba(255,255,255,.04);
-  color: #aebed0;
-  padding: 11px;
-  border-radius: 10px;
-  margin-top: 15px;
-  cursor: pointer;
-  font-weight: 700;
-}
-
-.empty {
-  color: var(--muted);
-  text-align: center;
-  padding: 25px 10px;
-  border: 1px dashed rgba(255,255,255,.1);
-  border-radius: 12px;
-  font-size: 13px;
-}
-
-@media (max-width: 600px) {
-  main {
-    padding: 13px;
+@media(max-width:800px){
+  .stats{
+    grid-template-columns:repeat(2,1fr);
   }
 
-  .card {
-    padding: 15px;
-    border-radius: 15px;
+  .trade-info{
+    grid-template-columns:repeat(2,1fr);
+  }
+}
+
+@media(max-width:600px){
+  .container{
+    width:94%;
   }
 
-  .form-grid {
-    grid-template-columns: 1fr;
+  .form-grid{
+    grid-template-columns:1fr;
   }
 
-  .stats {
-    grid-template-columns: 1fr 1fr;
+  .field.full{
+    grid-column:auto;
   }
 
-  .stat-value {
-    font-size: 18px;
+  .stats{
+    grid-template-columns:repeat(2,1fr);
   }
 
-  .trade-info {
-    grid-template-columns: 1fr 1fr;
+  .button-row{
+    flex-direction:column;
   }
 }
 </style>
@@ -420,141 +356,152 @@ textarea {
 
 <body>
 
-<header>
-  <div class="header-inner">
+<div class="container">
 
+  <header class="header">
     <div class="brand">
       <div class="logo">⭐</div>
-
       <div>
-        <div class="header-title">
-          BlueStar Prime
-        </div>
-
-        <div class="header-subtitle">
-          Professional Trading Journal
-        </div>
+        <h1>BlueStar Prime</h1>
+        <p>Professional Trading Journal</p>
       </div>
     </div>
 
-    <div class="header-user">
-      👤 <span id="userName">Telegram User</span>
-      — Personal Trading Journal
+    <div class="user">
+      👤 Trader:
+      <strong id="telegramUser">Loading...</strong>
     </div>
-
-  </div>
-</header>
-
-
-<main>
+  </header>
 
   <!-- DASHBOARD -->
+  <section class="section">
 
-  <div class="card">
-
-    <div class="section-heading">
-      <div>
-        <h2 class="section-title">📊 Trading Dashboard</h2>
-        <p class="section-caption">Your overall trading performance</p>
-      </div>
+    <div class="section-title">
+      <h2>📊 Trading Dashboard</h2>
+      <span>Performance Overview</span>
     </div>
 
     <div class="stats">
 
       <div class="stat">
-        <span class="stat-label">Total Trades</span>
-        <span class="stat-value" id="totalTrades">0</span>
+        <div class="stat-label">Total Trades</div>
+        <div class="stat-value" id="totalTrades">0</div>
       </div>
 
       <div class="stat">
-        <span class="stat-label">Wins</span>
-        <span class="stat-value" id="wins">0</span>
+        <div class="stat-label">Wins</div>
+        <div class="stat-value green" id="wins">0</div>
       </div>
 
       <div class="stat">
-        <span class="stat-label">Losses</span>
-        <span class="stat-value" id="losses">0</span>
+        <div class="stat-label">Losses</div>
+        <div class="stat-value red" id="losses">0</div>
       </div>
 
       <div class="stat">
-        <span class="stat-label">Win Rate</span>
-        <span class="stat-value" id="winRate">0%</span>
+        <div class="stat-label">Win Rate</div>
+        <div class="stat-value gold" id="winRate">0%</div>
       </div>
 
       <div class="stat">
-        <span class="stat-label">Total Profit</span>
-        <span class="stat-value" id="totalProfit">0</span>
+        <div class="stat-label">Total Profit</div>
+        <div class="stat-value green" id="totalProfit">0</div>
       </div>
 
       <div class="stat">
-        <span class="stat-label">Total Loss</span>
-        <span class="stat-value" id="totalLoss">0</span>
+        <div class="stat-label">Total Loss</div>
+        <div class="stat-value red" id="totalLoss">0</div>
       </div>
 
       <div class="stat">
-        <span class="stat-label">Net P/L</span>
-        <span class="stat-value" id="netPL">0</span>
+        <div class="stat-label">Net P/L</div>
+        <div class="stat-value" id="netPL">0</div>
       </div>
 
     </div>
-
-  </div>
-
+  </section>
 
   <!-- ADD TRADE -->
+  <section class="section">
 
-  <div class="card">
-
-    <div class="section-heading">
-      <div>
-        <h2 class="section-title">➕ Add Trade</h2>
-        <p class="section-caption">Record your trading activity</p>
-      </div>
+    <div class="section-title">
+      <h2>➕ Add New Trade</h2>
+      <span>Record your position</span>
     </div>
 
     <form id="tradeForm">
 
       <div class="form-grid">
 
-        <div>
+        <div class="field">
           <label>Coin / Pair</label>
-          <input id="pair" type="text" placeholder="BTC/USDT" required>
+          <input id="pair" required placeholder="e.g. BTC/USDT">
         </div>
 
-        <div>
+        <div class="field">
           <label>Trading Date</label>
           <input id="tradingDate" type="date" required>
         </div>
 
-        <div>
+        <div class="field">
           <label>Direction</label>
-
           <select id="direction">
             <option value="Long">Long</option>
             <option value="Short">Short</option>
           </select>
-
         </div>
 
-        <div>
+        <div class="field">
           <label>Entry Price</label>
-          <input id="entryPrice" type="number" step="any" placeholder="0.00">
+          <input id="entryPrice" type="number" step="any" placeholder="Enter entry price">
         </div>
 
-        <div>
+        <div class="field">
           <label>Exit Price</label>
-          <input id="exitPrice" type="number" step="any" placeholder="0.00">
+          <input id="exitPrice" type="number" step="any" placeholder="Enter exit price">
         </div>
 
-        <div>
+        <div class="field">
           <label>Stop Loss</label>
-          <input id="stopLoss" type="number" step="any" placeholder="0.00">
+          <input id="stopLoss" type="number" step="any" placeholder="Enter stop loss">
         </div>
 
-        <div>
+        <div class="field">
           <label>Take Profit</label>
-          <input id="takeProfit" type="number" step="any" placeholder="0.00">
+          <input id="takeProfit" type="number" step="any" placeholder="Enter take profit">
         </div>
 
-        <div>
-          <label>Trade Amount</
+        <div class="field">
+          <label>Trade Amount</label>
+          <input
+            id="tradeAmount"
+            type="number"
+            inputmode="decimal"
+            step="any"
+            min="0"
+            placeholder="Enter trade amount"
+          >
+        </div>
+
+        <div class="field">
+          <label>Risk %</label>
+          <input id="riskPercent" type="number" step="any" min="0" placeholder="e.g. 2">
+        </div>
+
+        <div class="field">
+          <label>Result</label>
+          <select id="result">
+            <option value="Win">Win</option>
+            <option value="Loss">Loss</option>
+            <option value="Breakeven">Breakeven</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label>Amount Won / Lost</label>
+          <input id="pnlAmount" type="number" step="any" placeholder="e.g. 150 or -80">
+        </div>
+
+        <div class="field full">
+          <label>Notes</label>
+          <textarea id="notes" placeholder="Write your trade notes..."></
