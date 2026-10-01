@@ -123,4 +123,217 @@ const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.dow
 loadTrades();
 </script>
 </body>
+</html><!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BlueStar Prime⭐ Trading Journal</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f5f7fb;
+      color: #1
+    }
+
+    header {
+      background: #101a3a;
+      color: white;
+      padding: 18px;
+    }
+
+    main {
+      max-width: 760px;
+      margin: auto;
+      padding: 16px;
+    }
+
+
+    .card {
+      background: white;
+      border-radius: 14px;
+      padding: 16px;
+      margin-bottom: 15px;
+      box-shadow: 0 2px 8px rgba(0,0,0,.08);
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .stat {
+      background: #eef3ff;
+      padding: 12px;
+      border-radius: 10px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    input, select, textarea, button {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 11px;
+      margin-top: 8px;
+      border: 1px solid #ccd2df;
+      border-radius: 9px;
+      font-size: 14px;
+    }
+
+    textarea {
+      min-height: 80px;
+      resize: vertical;
+    }
+
+    button {
+      background: #1769e0;
+      color: white;
+      border: none;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .muted {
+      color: #667085;
+    }
+
+    @media (max-width: 600px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style></head><body><header>
+  <div><strong>⭐ BlueStar Prime</strong></div>
+  <div>
+    👤 <span id="userName">Telegram User</span>
+    — Personal Trading Journal
+  </div>
+</header><main>  <div class="card">
+    <h2>📊 Dashboard</h2><div class="stats">
+  <div class="stat">Total Trades<br><b id="totalTrades">0</b></div>
+  <div class="stat">Wins<br><b id="wins">0</b></div>
+  <div class="stat">Losses<br><b id="losses">0</b></div>
+  <div class="stat">Win Rate<br><b id="winRate">0%</b></div>
+  <div class="stat">Total Profit<br><b id="profit">0</b></div>
+  <div class="stat">Total Loss<br><b id="loss">0</b></div>
+  <div class="stat">Net P/L<br><b id="net">0</b></div>
+</div>
+
+  </div>  <div class="card">
+    <h2>➕ Add Trade</h2><form id="tradeForm">
+
+  <div class="grid">
+
+    <input id="pair"
+      placeholder="Coin / Pair (BTC/USDT)"
+      required>
+
+    <input id="trading_date"
+      type="date"
+      required>
+
+    <select id="direction">
+      <option value="Long">Long</option>
+      <option value="Short">Short</option>
+    </select>
+
+    <input id="entry_price"
+      type="number"
+      step="any"
+      placeholder="Entry Price">
+
+    <input id="exit_price"
+      type="number"
+      step="any"
+      placeholder="Exit Price">
+
+    <input id="stop_loss"
+      type="number"
+      step="any"
+      placeholder="Stop Loss">
+
+    <input id="take_profit"
+      type="number"
+      step="any"
+      placeholder="Take Profit">
+
+    <input id="trade_amount"
+      type="number"
+      step="any"
+      placeholder="Trade Amount">
+
+    <input id="risk_percent"
+      type="number"
+      step="any"
+      placeholder="Risk %">
+
+    <select id="result">
+      <option value="Win">Win</option>
+      <option value="Loss">Loss</option>
+      <option value="Breakeven">Breakeven</option>
+    </select>
+
+    <input id="pnl_amount"
+      type="number"
+      step="any"
+      placeholder="Amount Won/Lost">
+
+  </div>
+
+  <textarea id="notes"
+    placeholder="Notes / Reason for Entry"></textarea>
+
+  <button type="submit">Save Trade</button>
+
+  <p id="message" class="muted"></p>
+
+</form>
+
+  </div>  <div class="card">
+    <h2>📚 My Trade History</h2>
+    <div id="history" class="muted">No trades yet.</div>
+  </div></main><script>
+
+  const tg = window.Telegram?.WebApp;
+
+  if (tg) {
+    tg.ready();
+    tg.expand();
+  }
+
+  const telegramUser = tg?.initDataUnsafe?.user;
+
+  if (telegramUser) {
+    const name =
+      [telegramUser.first_name, telegramUser.last_name]
+        .filter(Boolean)
+        .join(" ")
+      || telegramUser.username
+      || "Telegram User";
+
+    document.getElementById("userName").textContent = name;
+  }
+
+  /*
+    Secure Telegram authentication and
+    Supabase database connection will
+    be connected through the backend.
+  */
+
+  document.getElementById("tradeForm")
+    .addEventListener("submit", function(event) {
+
+      event.preventDefault();
+
+      document.getElementById("message").textContent =
+        "The interface is ready. Secure authentication and database connection are the next step.";
+
+    });
+
+</script></body>
 </html>
