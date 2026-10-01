@@ -213,4 +213,841 @@ button{
 
 .pair{
   font-size:17px;
- 
+  font-weight:bold;
+}
+
+.badge{
+  padding:5px 9px;
+  border-radius:20px;
+  font-size:11px;
+  font-weight:bold;
+}
+
+.win{
+  background:#103b2d;
+  color:#19c37d;
+}
+
+.loss{
+  background:#421827;
+  color:#ff4d67;
+}
+
+.breakeven{
+  background:#443716;
+  color:#f5c451;
+}
+
+.trade-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:8px;
+}
+
+.info{
+  background:#10243b;
+  border-radius:9px;
+  padding:9px;
+}
+
+.info small{
+  display:block;
+  color:#8fa4bd;
+  font-size:10px;
+  margin-bottom:5px;
+}
+
+.info strong{
+  font-size:13px;
+}
+
+.notes{
+  color:#b8c8d9;
+  font-size:13px;
+  margin-top:12px;
+  line-height:1.5;
+}
+
+.delete-button{
+  margin-top:12px;
+  background:#321522;
+  color:#ff7082;
+  padding:9px 12px;
+  font-size:12px;
+}
+
+.empty{
+  text-align:center;
+  color:#8fa4bd;
+  padding:30px 10px;
+}
+
+@media(max-width:800px){
+  .stats{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .trade-grid{
+    grid-template-columns:repeat(2,1fr);
+  }
+}
+
+@media(max-width:600px){
+  .form-grid{
+    grid-template-columns:1fr;
+  }
+
+  .full{
+    grid-column:auto;
+  }
+
+  .actions{
+    flex-direction:column;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<header class="header">
+  <div class="brand">
+    <div class="logo">⭐</div>
+
+    <div>
+      <h1>BlueStar Prime</h1>
+      <div class="subtitle">Professional Trading Journal</div>
+    </div>
+  </div>
+
+  <div class="user">
+    👤 Trader: <span id="telegramUser">Telegram User</span>
+  </div>
+</header>
+
+
+<section class="section">
+
+  <div class="section-title">
+    <h2>📊 Trading Dashboard</h2>
+    <span class="muted">Performance Overview</span>
+  </div>
+
+  <div class="stats">
+
+    <div class="stat">
+      <div class="stat-label">Total Trades</div>
+      <div class="stat-value" id="totalTrades">0</div>
+    </div>
+
+    <div class="stat">
+      <div class="stat-label">Wins</div>
+      <div class="stat-value green" id="wins">0</div>
+    </div>
+
+    <div class="stat">
+      <div class="stat-label">Losses</div>
+      <div class="stat-value red" id="losses">0</div>
+    </div>
+
+    <div class="stat">
+      <div class="stat-label">Win Rate</div>
+      <div class="stat-value gold" id="winRate">0%</div>
+    </div>
+
+    <div class="stat">
+      <div class="stat-label">Total Profit</div>
+      <div class="stat-value green" id="totalProfit">0</div>
+    </div>
+
+    <div class="stat">
+      <div class="stat-label">Total Loss</div>
+      <div class="stat-value red" id="totalLoss">0</div>
+    </div>
+
+    <div class="stat">
+      <div class="stat-label">Net P/L</div>
+      <div class="stat-value" id="netPL">0</div>
+    </div>
+
+  </div>
+</section>
+
+
+<section class="section">
+
+  <div class="section-title">
+    <h2>➕ Add New Trade</h2>
+    <span class="muted">Record your position</span>
+  </div>
+
+  <form id="tradeForm">
+
+    <div class="form-grid">
+
+      <div class="field">
+        <label>Coin / Pair</label>
+        <input id="pair" type="text" placeholder="e.g. BTC/USDT" required>
+      </div>
+
+      <div class="field">
+        <label>Trading Date</label>
+        <input id="tradingDate" type="date" required>
+      </div>
+
+      <div class="field">
+        <label>Direction</label>
+        <select id="direction">
+          <option value="Long">Long</option>
+          <option value="Short">Short</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Entry Price</label>
+        <input id="entryPrice" type="number" step="any" placeholder="Entry price">
+      </div>
+
+      <div class="field">
+        <label>Exit Price</label>
+        <input id="exitPrice" type="number" step="any" placeholder="Exit price">
+      </div>
+
+      <div class="field">
+        <label>Stop Loss</label>
+        <input id="stopLoss" type="number" step="any" placeholder="Stop loss">
+      </div>
+
+      <div class="field">
+        <label>Take Profit</label>
+        <input id="takeProfit" type="number" step="any" placeholder="Take profit">
+      </div>
+
+      <div class="field">
+        <label>Trade Amount</label>
+        <input id="tradeAmount" type="number" step="any" min="0" inputmode="decimal" placeholder="Trade amount">
+      </div>
+
+      <div class="field">
+        <label>Risk %</label>
+        <input id="riskPercent" type="number" step="any" min="0" placeholder="e.g. 2">
+      </div>
+
+      <div class="field">
+        <label>Result</label>
+        <select id="result">
+          <option value="Win">Win</option>
+          <option value="Loss">Loss</option>
+          <option value="Breakeven">Breakeven</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Amount Won / Lost</label>
+        <input id="pnlAmount" type="number" step="any" placeholder="e.g. 100 or -50">
+      </div>
+
+      <div class="field full">
+        <label>Notes</label>
+        <textarea id="notes" placeholder="Write your trade notes..."></textarea>
+      </div>
+
+    </div>
+
+    <div class="actions">
+
+      <button type="submit" class="save-button">
+        💾 Save Trade
+      </button>
+
+      <button type="button" id="clearButton" class="clear-button">
+        🗑 Clear All
+      </button>
+
+    </div>
+
+    <div id="status" class="status"></div>
+
+  </form>
+
+</section>
+
+
+<section class="section">
+
+  <div class="section-title">
+    <h2>📚 Trade History</h2>
+    <span class="muted" id="tradeCount">0 trades</span>
+  </div>
+
+  <div id="tradeHistory"></div>
+
+</section>
+
+</div>
+
+
+<script>
+
+(function(){
+
+  "use strict";
+
+  /* -----------------------------
+     STORAGE
+  ----------------------------- */
+
+  var STORAGE_KEY = "bluestarPrimeTrades";
+
+  var trades = [];
+
+  try {
+    trades = JSON.parse(
+      localStorage.getItem(STORAGE_KEY) || "[]"
+    );
+
+    if (!Array.isArray(trades)) {
+      trades = [];
+    }
+
+  } catch(error) {
+    trades = [];
+  }
+
+
+  /* -----------------------------
+     TELEGRAM USER
+  ----------------------------- */
+
+  var telegramName =
+    document.getElementById("telegramUser");
+
+  if (
+    window.Telegram &&
+    window.Telegram.WebApp
+  ){
+
+    window.Telegram.WebApp.ready();
+
+    var tgUser =
+      window.Telegram.WebApp.initDataUnsafe &&
+      window.Telegram.WebApp.initDataUnsafe.user;
+
+    if(tgUser){
+
+      var name =
+        tgUser.first_name || "";
+
+      if(tgUser.last_name){
+        name += " " + tgUser.last_name;
+      }
+
+      if(name.trim()){
+        telegramName.textContent = name;
+      }
+
+    }
+
+  }
+
+
+  /* -----------------------------
+     DEFAULT DATE
+  ----------------------------- */
+
+  var dateInput =
+    document.getElementById("tradingDate");
+
+  dateInput.value =
+    new Date().toISOString().split("T")[0];
+
+
+  /* -----------------------------
+     HELPERS
+  ----------------------------- */
+
+  function saveTrades(){
+
+    localStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify(trades)
+    );
+
+  }
+
+
+  function number(value){
+
+    var n = Number(value);
+
+    if(isNaN(n)){
+      return 0;
+    }
+
+    return n;
+
+  }
+
+
+  function displayNumber(value){
+
+    return number(value).toLocaleString(
+      undefined,
+      {
+        maximumFractionDigits:2
+      }
+    );
+
+  }
+
+
+  function safe(value){
+
+    return String(value == null ? "" : value)
+      .replace(/&/g,"&amp;")
+      .replace(/</g,"&lt;")
+      .replace(/>/g,"&gt;")
+      .replace(/"/g,"&quot;")
+      .replace(/'/g,"&#039;");
+
+  }
+
+
+  /* -----------------------------
+     DASHBOARD
+  ----------------------------- */
+
+  function updateDashboard(){
+
+    var total = trades.length;
+
+    var wins =
+      trades.filter(function(t){
+        return t.result === "Win";
+      }).length;
+
+    var losses =
+      trades.filter(function(t){
+        return t.result === "Loss";
+      }).length;
+
+    var profit = 0;
+    var loss = 0;
+    var net = 0;
+
+    trades.forEach(function(t){
+
+      var pnl = number(t.pnlAmount);
+
+      net += pnl;
+
+      if(pnl > 0){
+        profit += pnl;
+      }
+
+      if(pnl < 0){
+        loss += Math.abs(pnl);
+      }
+
+    });
+
+    var winRate =
+      total > 0
+      ? ((wins / total) * 100).toFixed(1)
+      : "0";
+
+    document.getElementById("totalTrades").textContent = total;
+
+    document.getElementById("wins").textContent = wins;
+
+    document.getElementById("losses").textContent = losses;
+
+    document.getElementById("winRate").textContent =
+      winRate + "%";
+
+    document.getElementById("totalProfit").textContent =
+      displayNumber(profit);
+
+    document.getElementById("totalLoss").textContent =
+      displayNumber(loss);
+
+    var netElement =
+      document.getElementById("netPL");
+
+    netElement.textContent =
+      displayNumber(net);
+
+    netElement.className =
+      "stat-value " +
+      (
+        net > 0
+        ? "green"
+        : net < 0
+        ? "red"
+        : ""
+      );
+
+  }
+
+
+  /* -----------------------------
+     TRADE HISTORY
+  ----------------------------- */
+
+  function renderHistory(){
+
+    var history =
+      document.getElementById("tradeHistory");
+
+    document.getElementById("tradeCount").textContent =
+      trades.length +
+      (trades.length === 1 ? " trade" : " trades");
+
+
+    if(trades.length === 0){
+
+      history.innerHTML =
+        '<div class="empty">📭 No trades recorded yet.</div>';
+
+      return;
+
+    }
+
+
+    var html = "";
+
+
+    for(
+      var i = trades.length - 1;
+      i >= 0;
+      i--
+    ){
+
+      var t = trades[i];
+
+      var badgeClass =
+        t.result === "Win"
+        ? "win"
+        : t.result === "Loss"
+        ? "loss"
+        : "breakeven";
+
+
+      var pnl = number(t.pnlAmount);
+
+      var pnlClass =
+        pnl > 0
+        ? "green"
+        : pnl < 0
+        ? "red"
+        : "gold";
+
+
+      html +=
+      '<div class="trade">' +
+
+        '<div class="trade-header">' +
+
+          '<div class="pair">' +
+            safe(t.pair) +
+          '</div>' +
+
+          '<div class="badge ' +
+            badgeClass +
+          '">' +
+            safe(t.result) +
+          '</div>' +
+
+        '</div>' +
+
+
+        '<div class="trade-grid">' +
+
+          '<div class="info">' +
+            '<small>Date</small>' +
+            '<strong>' +
+              safe(t.tradingDate) +
+            '</strong>' +
+          '</div>' +
+
+          '<div class="info">' +
+            '<small>Direction</small>' +
+            '<strong>' +
+              safe(t.direction) +
+            '</strong>' +
+          '</div>' +
+
+          '<div class="info">' +
+            '<small>Entry</small>' +
+            '<strong>' +
+              displayNumber(t.entryPrice) +
+            '</strong>' +
+          '</div>' +
+
+          '<div class="info">' +
+            '<small>Exit</small>' +
+            '<strong>' +
+              displayNumber(t.exitPrice) +
+            '</strong>' +
+          '</div>' +
+
+          '<div class="info">' +
+            '<small>Trade Amount</small>' +
+            '<strong>' +
+              displayNumber(t.tradeAmount) +
+            '</strong>' +
+          '</div>' +
+
+          '<div class="info">' +
+            '<small>Risk</small>' +
+            '<strong>' +
+              displayNumber(t.riskPercent) +
+              '%' +
+            '</strong>' +
+          '</div>' +
+
+          '<div class="info">' +
+            '<small>Stop Loss</small>' +
+            '<strong>' +
+              displayNumber(t.stopLoss) +
+            '</strong>' +
+          '</div>' +
+
+          '<div class="info">' +
+            '<small>Take Profit</small>' +
+            '<strong>' +
+              displayNumber(t.takeProfit) +
+            '</strong>' +
+          '</div>' +
+
+          '<div class="info">' +
+            '<small>P/L</small>' +
+            '<strong class="' +
+              pnlClass +
+            '">' +
+              displayNumber(pnl) +
+            '</strong>' +
+          '</div>' +
+
+        '</div>';
+
+
+      if(t.notes){
+
+        html +=
+          '<div class="notes">📝 ' +
+            safe(t.notes) +
+          '</div>';
+
+      }
+
+
+      html +=
+        '<button ' +
+          'type="button" ' +
+          'class="delete-button" ' +
+          'data-index="' + i + '">' +
+          'Delete Trade' +
+        '</button>' +
+
+      '</div>';
+
+    }
+
+
+    history.innerHTML = html;
+
+
+    var deleteButtons =
+      history.querySelectorAll(".delete-button");
+
+
+    deleteButtons.forEach(function(button){
+
+      button.addEventListener(
+        "click",
+        function(){
+
+          var index =
+            Number(this.getAttribute("data-index"));
+
+          if(
+            confirm("Delete this trade?")
+          ){
+
+            trades.splice(index,1);
+
+            saveTrades();
+
+            updateDashboard();
+
+            renderHistory();
+
+          }
+
+        }
+      );
+
+    });
+
+  }
+
+
+  /* -----------------------------
+     SAVE TRADE
+  ----------------------------- */
+
+  var form =
+    document.getElementById("tradeForm");
+
+
+  form.addEventListener(
+    "submit",
+    function(event){
+
+      event.preventDefault();
+
+
+      var pair =
+        document.getElementById("pair").value.trim();
+
+
+      if(!pair){
+
+        alert("Please enter the Coin / Pair.");
+
+        return;
+
+      }
+
+
+      var trade = {
+
+        pair:
+          pair,
+
+        tradingDate:
+          document.getElementById("tradingDate").value,
+
+        direction:
+          document.getElementById("direction").value,
+
+        entryPrice:
+          document.getElementById("entryPrice").value,
+
+        exitPrice:
+          document.getElementById("exitPrice").value,
+
+        stopLoss:
+          document.getElementById("stopLoss").value,
+
+        takeProfit:
+          document.getElementById("takeProfit").value,
+
+        tradeAmount:
+          document.getElementById("tradeAmount").value,
+
+        riskPercent:
+          document.getElementById("riskPercent").value,
+
+        result:
+          document.getElementById("result").value,
+
+        pnlAmount:
+          document.getElementById("pnlAmount").value || "0",
+
+        notes:
+          document.getElementById("notes").value.trim(),
+
+        createdAt:
+          new Date().toISOString()
+
+      };
+
+
+      trades.push(trade);
+
+      saveTrades();
+
+      updateDashboard();
+
+      renderHistory();
+
+
+      form.reset();
+
+
+      dateInput.value =
+        new Date().toISOString().split("T")[0];
+
+
+      var status =
+        document.getElementById("status");
+
+      status.textContent =
+        "✅ Trade saved successfully.";
+
+      status.className =
+        "status green";
+
+
+      setTimeout(function(){
+
+        status.textContent = "";
+
+      },3000);
+
+    }
+  );
+
+
+  /* -----------------------------
+     CLEAR ALL
+  ----------------------------- */
+
+  document
+    .getElementById("clearButton")
+    .addEventListener(
+      "click",
+      function(){
+
+        if(trades.length === 0){
+          return;
+        }
+
+
+        if(
+          confirm(
+            "Are you sure you want to delete all trades?"
+          )
+        ){
+
+          trades = [];
+
+          saveTrades();
+
+          updateDashboard();
+
+          renderHistory();
+
+        }
+
+      }
+    );
+
+
+  /* -----------------------------
+     START
+  ----------------------------- */
+
+  updateDashboard();
+
+  renderHistory();
+
+})();
+</script>
+
+</body>
+</html>
