@@ -35,3 +35,92 @@ body{font-family:Inter,sans-serif;background:#0a1220;color:#e2e8f0}
 </aside>
 <main class="flex-1 p-4 md:p-6">
 <div class="flex flex-col md:flex-row justify-between gap-4 mb-6
+<div id="tradeModal" class="fixed inset-0 bg-black/70 hidden items-center justify-center z-[100] p-4">
+<div class="bg-[#111d32] border border-[#1e335a] rounded-2xl p-6 w-full max-w-md">
+<h3 class="font-bold text-xl mb-4 gold">+ Add New Trade</h3>
+<div class="space-y-3">
+<select id="pair" class="w-full p-3 rounded-xl bg-[#0a1220] border border-[#1e335a]"><option>BTC/USDT</option><option>ETH/USDT</option><option>SOL/USDT</option><option>AVAX/USDT</option><option>BNB/USDT</option></select>
+<div class="grid grid-cols-2 gap-3"><select id="type" class="p-3 rounded-xl bg-[#0a1220] border border-[#1e335a]"><option>LONG</option><option>SHORT</option></select><input id="qty" type="number" placeholder="Qty" class="p-3 rounded-xl bg-[#0a1220] border border-[#1e335a]"></div>
+<div class="grid grid-cols-2 gap-3"><input id="entry" type="number" placeholder="Entry Price" class="p-3 rounded-xl bg-[#0a1220] border border-[#1e335a]"><input id="exit" type="number" placeholder="Exit Price" class="p-3 rounded-xl bg-[#0a1220] border border-[#1e335a]"></div>
+<input id="pnl" type="number" placeholder="P&L e.g 150 or -80" class="w-full p-3 rounded-xl bg-[#0a1220] border border-[#1e335a]">
+</div>
+<div class="flex gap-3 mt-5"><button onclick="closeModal()" class="flex-1 p-3 rounded-xl border border-[#1e335a]">Cancel</button><button onclick="saveTrade()" class="flex-1 gold-bg text-black font-bold p-3 rounded-xl">Save Trade</button></div>
+</div>
+</div>
+<script>
+const SUPABASE_URL = "https://migjxtseejlvpcilsuzt.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_MT3yzNOlbdJBuUNaUQqpfg_4t2FKoqB";
+const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const tg = window.Telegram?.WebApp;
+if(tg){ tg.ready(); tg.expand(); }
+const tgUser = tg?.initDataUnsafe?.user;
+let currentTelegramId = null;
+let currentTelegramName = "Telegram User";
+if(tgUser){
+currentTelegramId = tgUser.id;
+currentTelegramName = tgUser.first_name + (tgUser.last_name? " "+tgUser.last_name : "");
+document.getElementById("userName").innerText = currentTelegramName;
+document.getElementById("userHandle").innerText = "@"+(tgUser.username||"user")+" • ID:"+tgUser.id;
+document.getElementById("userAvatar").innerText = tgUser.first_name[0].toUpperCase();
+}
+let trades = [];
+async function loadTrades(){
+try{
+let query = supabaseClient.from("traders").select("*").order("created_at", {ascending:false});
+if(currentTelegramId){ query = query.eq("telegram_id", currentTelegramId); }
+const {data, error} = await query;
+if(!error && data){ trades = data; render(); return; }
+}catch(e){ console.log(e); }
+trades = JSON.parse(localStorage.getItem("trades")||"[]");
+render();
+}
+function render(){
+document.getElementById("totalTrades").innerText = trades.length;
+document.getElementById("monthTrades").innerText = trades.length+" total";
+const wins = trades.filter(t=> Number(t.pnl||t.profit||0) > 0);
+const winRateVal = trades.length? Math.round(wins.length/trades.length*100) : 0;
+document.getElementById("winRate").innerText = winRateVal+"%";
+document.getElementById("winBar").style.width = winRateVal+"%";
+document.getElementById("circleWinRate").innerText = winRateVal+"%";
+const totalPnl = trades.reduce((s,t)=> s + Number(t.pnl||t.profit||0), 0);
+document.getElementById("totalProfit").innerText = (totalPnl>=0?"+":"")+"$"+totalPnl.toFixed(2);
+document.getElementById("balanceDisplay").innerText = "$"+totalPnl.toFixed(2);
+const tbody = document.getElementById("tradeTable");
+if(trades.length===0){
+tbody.innerHTML = '<tr><td colspan="7" class="text-center p-8 text-slate-500">No trades yet. Click + Add Trade!</td></tr>';
+} else {
+tbody.innerHTML = trades.map(t=>{
+const pnl = Number(t.pnl||t.profit||0);
+const isWin = pnl>0;
+const date = new Date(t.created_at||Date.now()).toLocaleString();
+return `<tr class="border-b border-[#0f1d33]"><td class="p-2">${date}</td><td class="text-center">${t.pair||"-"}</td><td class="text-center"><span class="${isWin?'win':'loss'} px-2 py-1 rounded-full text-xs">${t.type||"LONG"}</span></td><td class="text-center">$${t.entry||"-"}</td><td class="text-center">$${t.exit||"-"}</td><td class="text-center ${isWin?'text-emerald-400':'text-red-400'}">${pnl>=0?"+":""}$${pnl}</td><td class="text-center"><span class="${isWin?'win':'loss'} px-3 py-1 rounded-full text-xs">${isWin?'WIN':'LOSS'}</span></td></tr>`;
+}).join("");
+}
+}
+function openModal(){ document.getElementById("tradeModal").classList.remove("hidden"); document.getElementById("tradeModal").classList.add("flex"); }
+function closeModal(){ document.getElementById("tradeModal").classList.add("hidden"); }
+async function saveTrade(){
+const pair = document.getElementById("pair").value;
+const type = document.getElementById("type").value;
+const qty = document.getElementById("qty").value;
+const entry = document.getElementById("entry").value;
+const exit = document.getElementById("exit").value;
+const pnl = Number(document.getElementById("pnl").value);
+if(!pnl && pnl!==0){ alert("Enter P&L"); return; }
+const trade = { pair, type, qty, entry, exit, pnl, profit: pnl, telegram_id: currentTelegramId, telegram_name: currentTelegramName, created_at: new Date().toISOString() };
+try{ await supabaseClient.from("traders").insert([trade]); }catch(e){ console.log(e); }
+trades.unshift(trade);
+localStorage.setItem("trades", JSON.stringify(trades));
+closeModal(); render();
+}
+function exportCSV(){
+if(!trades.length){ alert("No trades"); return; }
+let csv = "Date,Pair,Type,Entry,Exit,Qty,PnL\n";
+trades.forEach(t=>{ csv+= `${t.created_at},${t.pair},${t.type},${t.entry},${t.exit},${t.qty},${t.pnl}\n`; });
+const blob = new Blob([csv], {type:"text/csv"});
+const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download="bluestar_trades.csv"; a.click();
+}
+loadTrades();
+</script>
+</body>
+</html>
